@@ -5,7 +5,7 @@
 #include <string>
 #include <algorithm>
 
-Sudoku::Sudoku() : grid(ROWS, std::vector<int>(COLS, 0)) {}
+Sudoku::Sudoku(SudokuSolver* solver) : grid(ROWS, std::vector<int>(COLS, 0)), solver(solver) {}
 
 Sudoku::~Sudoku() {}
 

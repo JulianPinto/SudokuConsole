@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "SudokuSolver.h"
+#include "Constants.h"
 
 class Sudoku
 {
@@ -13,13 +14,11 @@ private:
         exit
     };
 
-    const int ROWS{9};
-    const int COLS{9};
     State state{State::mainMenu};
-    std::vector<std::vector<int>> grid;
-
+    sudokuBoard grid;
+    SudokuSolver* solver;
 public:
-    Sudoku();
+    Sudoku(SudokuSolver* solver);
     ~Sudoku();
     void run();
 

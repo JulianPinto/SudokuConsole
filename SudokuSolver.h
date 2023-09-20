@@ -1,8 +1,9 @@
 #pragma once
 #include <vector>
+#include "Constants.h"
 
 class SudokuSolver {
 public:
-    virtual bool isCorrect(const std::vector<std::vector<int>>& board) = 0;
-    virtual bool isBoardSolved(const std::vector<std::vector<int>>& board) = 0;
+    virtual bool isCorrect(const sudokuBoard& board) = 0;
+    virtual bool isBoardSolved(const sudokuBoard& board) = 0;
 };
