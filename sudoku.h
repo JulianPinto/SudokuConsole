@@ -11,12 +11,15 @@ private:
         newBoard,
         playing,
         creatingBoard,
+        settings,
         exit
     };
 
     State state{State::mainMenu};
     sudokuBoard grid;
     SudokuSolver* solver;
+    bool errorCheck{false};
+
 public:
     Sudoku(SudokuSolver* solver);
     ~Sudoku();
@@ -26,10 +29,12 @@ private:
     void mainMenu();
     void newBoard();
     void playBoard();
+    void settings();
 
     void resetGrid();
     void makeRandomBoard(const int& numRandomInputs);
-    void addRandomNumberToGrid();
+    void customGridMenu();
+    void processValidBoardInput(const int& r, const int& c, const int& num);
     void setNumber(const int& r, const int& c, const int& num);
     int getNumber(const int& r, const int& c) const;
     bool validNumber(const int& num) const;
@@ -42,7 +47,7 @@ private:
 
     void printGrid() const;
     void printMenu() const;
-    void customGridMenu();
+    void printSettings() const;
     void printNewBoardMenu() const;
     void printHorizontal() const;
     void printGoodbye() const;

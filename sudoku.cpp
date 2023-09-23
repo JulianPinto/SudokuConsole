@@ -1,9 +1,10 @@
 #include <iostream>
 #include <stdio.h>
 #include <cstdlib>
-#include "sudoku.h"
 #include <string>
 #include <algorithm>
+
+#include "sudoku.h"
 
 Sudoku::Sudoku(SudokuSolver* solver) : grid(ROWS, std::vector<int>(COLS, 0)), solver(solver) {}
 
@@ -11,7 +12,7 @@ Sudoku::~Sudoku() {}
 
 void Sudoku::run() {
     while(1) {
-        std::cout << '\n';
+        system("clear");
         switch(state) {
             case State::mainMenu:
                 mainMenu();
@@ -26,6 +27,9 @@ void Sudoku::run() {
             case State::creatingBoard:
                 //TODO
             break;
+            case State::settings:
+                settings();
+                break;
             case State::exit:
                printGoodbye();
                return;
@@ -55,7 +59,10 @@ void Sudoku::mainMenu() {
     case 2: // make board
         state = State::creatingBoard;
         break;
-    case 3: // exit
+    case 3: // settings
+        state = State::settings;
+        break;
+    case 4: // exit
         state = State::exit;
         break;
     default:
@@ -110,12 +117,29 @@ void Sudoku::playBoard() {
     std::cin >> r >> c >> num;
     bool validInput = validCoordinate(r) && validCoordinate(c) && validNumber(num);
     if(validInput) {
-        std::cout << "Setting row " << r << " and column " << c << " to " << num << '\n';
-        setNumber(r, c, num);
+        processValidBoardInput(r, c, num);
     } else if(r == c == num == 0) {
         std::cout << "Exiting game\n";
         state = State::mainMenu;
     } else {
+        std::cout << "invalid input\n";
+    }
+}
+
+void Sudoku::settings() {
+    printSettings();
+    int option;
+    std::cin >> option;
+    switch (option) {
+    case 1: // change error check
+        errorCheck = !errorCheck;
+        break;
+    
+    case 2: // exit
+        state = State::mainMenu;
+        break;
+
+    default:
         std::cout << "invalid input\n";
     }
 }
@@ -126,12 +150,14 @@ int Sudoku::getNumber(const int & r, const int & c) const {
 
 void Sudoku::makeRandomBoard(const int& numRandomInputs) {
     for(int i = 0; i < numRandomInputs; i++) {
-        addRandomNumberToGrid();
+        // TODO
     }
 }
 
-void Sudoku::addRandomNumberToGrid() {
-    // TODO                                                                                                                                                                                                                                                                                                                                                                                         
+void Sudoku::processValidBoardInput(const int& r, const int& c, const int& num) {
+    std::cout << "Setting row " << r << " and column " << c << " to " << num << '\n';
+    setNumber(r, c, num);
+    solver->isInvalidNumLocation(grid, r, c, num);
 }
 
 void Sudoku::printGrid() const {
@@ -158,13 +184,11 @@ void Sudoku::checkBoardComplete() {
 }
 
 bool Sudoku::isBoardValid() const {
-    // TODO
-    return false;
+    return solver->getCorrect();
 }
 
 bool Sudoku::isBoardSolved() const {
-    // TODO
-    return false;
+    return solver->isBoardSolved(grid);
 }
 
 bool Sudoku::validNumber(const int& num) const {
@@ -184,7 +208,13 @@ int Sudoku::getRandomNumber() const {
 }
 
 void Sudoku::printMenu() const {
-    std::cout << "Control Menu\n1: New Board\n2: Make Board\n3: Exit\n";
+    std::cout << "Control Menu\n1: New Board\n2: Make Board\n3: Settings\n4: Exit\n";
+}
+
+void Sudoku::printSettings() const {
+    std::cout << "Settings:\n";
+    std::cout << "1: toggle Error Check: " << (errorCheck ? "True\n" : "False\n");
+    std::cout << "2: Exit\n";
 }
 
 void Sudoku::printNewBoardMenu() const {

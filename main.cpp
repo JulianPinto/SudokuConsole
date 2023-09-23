@@ -6,7 +6,7 @@
 
 int main(int argc, char *argv[]) {
     std::cout << "Welcome to Console Sudoku\n";
-    SudokuSolver *solver = std::make_unique<SudokuSolverBruteForce>();
+    SudokuSolverBruteForce *solver = new SudokuSolverBruteForce();
     Sudoku sudoku(solver);
     sudoku.run();
 

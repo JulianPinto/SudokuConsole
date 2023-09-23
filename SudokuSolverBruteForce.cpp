@@ -1,15 +1,20 @@
 #include "SudokuSolverBruteForce.h"
 
+SudokuSolverBruteForce::SudokuSolverBruteForce() {}
+
 bool SudokuSolverBruteForce::isCorrect(const sudokuBoard& board) {
     for(int r = 0; r < ROWS; r++) {
         for(int c = 0; c < COLS; c++) {
             if(board[r][c] != 0) {
                 int num = board[r][c];
-                if(isInvalidNumLocation(board, r, c, num))
+                if(isInvalidNumLocation(board, r, c, num)) {
+                    correct = false;
                     return false;
+                }
             }
         }
     }
+    correct = true;
     return true;
 }
 
@@ -17,18 +22,26 @@ bool SudokuSolverBruteForce::isBoardSolved(const sudokuBoard& board) {
     for(int r = 0; r < ROWS; r++) {
         for(int c = 0; c < COLS; c++) {
             int num = board[r][c];
-            if(num == 0) return false;
-            if(isInvalidNumLocation(board, r, c, num)) return false;
+            if(num == 0) {
+                this->correct = false;
+                return false;
+            }
+            if(isInvalidNumLocation(board, r, c, num)) {
+                this->correct = false;
+                return false;
+            }
         }
     }
+    correct = true;
     return true;
 }
 
 bool SudokuSolverBruteForce::isInvalidNumLocation(const sudokuBoard & board, const int & r, const int & c, const int & num) {
-    return !onlyNumInRow(board, r, c, num) || !onlyNumInCol(board, r, c, num) || !onlyNumIn3x3(board, r, c, num);
+    correct = onlyNumInRow(board, r, c, num) && onlyNumInCol(board, r, c, num) && onlyNumIn3x3(board, r, c, num);
+    return !correct;
 }
 
-bool SudokuSolverBruteForce::onlyNumInRow(const sudokuBoard & board, const int & r, const int & c, const int & num) {
+bool SudokuSolverBruteForce::onlyNumInRow(const sudokuBoard & board, const int & r, const int & c, const int & num) const {
     for(int i = 0; i < ROWS; i++) {
         if(board[i][c] == num && i != r)
             return false;
@@ -36,7 +49,7 @@ bool SudokuSolverBruteForce::onlyNumInRow(const sudokuBoard & board, const int &
     return true;
 }
 
-bool SudokuSolverBruteForce::onlyNumInCol(const sudokuBoard & board, const int & r, const int & c, const int & num) {
+bool SudokuSolverBruteForce::onlyNumInCol(const sudokuBoard & board, const int & r, const int & c, const int & num) const {
     for(int i = 0; i < COLS; i++) {
         if(board[r][i] == num && i != c)
             return false;
@@ -44,7 +57,7 @@ bool SudokuSolverBruteForce::onlyNumInCol(const sudokuBoard & board, const int &
     return true;
 }
 
-bool SudokuSolverBruteForce::onlyNumIn3x3(const sudokuBoard & board, const int & r, const int & c, const int & num) {
+bool SudokuSolverBruteForce::onlyNumIn3x3(const sudokuBoard & board, const int & r, const int & c, const int & num) const {
     int row = r / 3;
     int col = c / 3;
 
