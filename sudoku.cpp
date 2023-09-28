@@ -3,6 +3,9 @@
 #include <cstdlib>
 #include <string>
 #include <algorithm>
+#include <random>
+#include <deque>
+#include <numeric>
 
 #include "sudoku.h"
 
@@ -150,7 +153,22 @@ int Sudoku::getNumber(const int & r, const int & c) const {
 
 void Sudoku::makeRandomBoard(const int& numRandomInputs) {
     for(int i = 0; i < numRandomInputs; i++) {
-        // TODO
+        std::deque<int> coords(ROWS * COLS);
+        std::iota(std::begin(coords), std::end(coords), 0);
+        std::shuffle(std::begin(coords), std::end(coords), std::default_random_engine());
+
+        std::deque<int> num{1, 2, 3, 4, 5, 6, 7, 8, 9};
+        std::shuffle(std::begin(num), std::end(num), std::default_random_engine());
+
+        while(getNumber(coords.front() / ROWS, coords.front() % ROWS) != 0) {
+            coords.pop_front();
+        }
+
+        while(solver->isInvalidNumLocation(grid, coords.front() / ROWS, coords.front() % ROWS, num.front())) {
+            num.pop_front();
+        }
+
+        setNumber(coords.front() / ROWS, coords.front() % ROWS, num.front());
     }
 }
 

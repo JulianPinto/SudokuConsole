@@ -132,6 +132,10 @@
     "__nullptr": "cpp",
     "__string": "cpp",
     "__tuple": "cpp",
-    "chrono": "cpp"
+    "chrono": "cpp",
+    "random": "cpp",
+    "deque": "cpp",
+    "queue": "cpp",
+    "numeric": "cpp"
   }
 }
