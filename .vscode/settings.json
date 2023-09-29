@@ -136,6 +136,9 @@
     "random": "cpp",
     "deque": "cpp",
     "queue": "cpp",
-    "numeric": "cpp"
+    "numeric": "cpp",
+    "unordered_set": "cpp",
+    "list": "cpp",
+    "xhash": "cpp"
   }
 }

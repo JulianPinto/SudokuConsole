@@ -6,10 +6,9 @@
 
 int main(int argc, char *argv[]) {
     std::cout << "Welcome to Console Sudoku\n";
-    SudokuSolver *solver = new SudokuSolverBruteForce();
+    SudokuSolver *solver = &SudokuSolverBruteForce();
     Sudoku sudoku(solver);
     sudoku.run();
-    delete(solver);
 
     return 0;
 }

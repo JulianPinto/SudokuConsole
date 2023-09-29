@@ -208,7 +208,8 @@ bool Sudoku::isBoardValid() const {
 }
 
 bool Sudoku::isBoardSolved() const {
-    return solver->isBoardSolved(board);
+    bool solved = solver->isCorrect(board) && solver->isBoardComplete(board);
+    return solved;
 }
 
 bool Sudoku::validNumber(const int& num) const {
