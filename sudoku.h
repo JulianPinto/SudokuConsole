@@ -16,7 +16,7 @@ private:
     };
 
     State state{State::mainMenu};
-    sudokuBoard grid;
+    sudokuBoard board;
     SudokuSolver* solver;
     bool errorCheck{false};
 

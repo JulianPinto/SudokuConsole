@@ -7,7 +7,6 @@ public:
     ~SudokuSolverBruteForce();
 
     bool isCorrect(const sudokuBoard& board) override;
-    bool isBoardSolved(const sudokuBoard& board) override;
     bool isInvalidNumLocation(const sudokuBoard& board, const int& r, const int& c, const int& num) override;
 
 private:

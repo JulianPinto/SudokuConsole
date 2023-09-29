@@ -9,7 +9,7 @@
 
 #include "sudoku.h"
 
-Sudoku::Sudoku(SudokuSolver* solver) : grid(ROWS, std::vector<int>(COLS, 0)), solver(solver) {}
+Sudoku::Sudoku(SudokuSolver* solver) : board(ROWS, std::vector<sudokuSquare>(COLS)), solver(solver) {}
 
 Sudoku::~Sudoku() {}
 
@@ -42,13 +42,15 @@ void Sudoku::run() {
 }
 
 void Sudoku::resetGrid() {
-    for(auto& row : grid) {
-        std::fill(row.begin(), row.end(), 0);
+    for(auto& row : board) {
+        for(auto& square : row) {
+            square.resetSquare();
+        }
     }
 }
 
 void Sudoku::setNumber(const int & r, const int & c, const int & num) {
-    grid[r][c] = num;
+    board[r][c].value = num;
 }
 
 void Sudoku::mainMenu() {
@@ -148,34 +150,34 @@ void Sudoku::settings() {
 }
 
 int Sudoku::getNumber(const int & r, const int & c) const {
-    return grid[r][c];
+    return board[r][c].value;
 }
 
 void Sudoku::makeRandomBoard(const int& numRandomInputs) {
-    for(int i = 0; i < numRandomInputs; i++) {
-        std::deque<int> coords(ROWS * COLS);
-        std::iota(std::begin(coords), std::end(coords), 0);
-        std::shuffle(std::begin(coords), std::end(coords), std::default_random_engine());
+    // for(int i = 0; i < numRandomInputs; i++) {
+    //     std::deque<int> coords(ROWS * COLS);
+    //     std::iota(std::begin(coords), std::end(coords), 0);
+    //     std::shuffle(std::begin(coords), std::end(coords), std::default_random_engine());
 
-        std::deque<int> num{1, 2, 3, 4, 5, 6, 7, 8, 9};
-        std::shuffle(std::begin(num), std::end(num), std::default_random_engine());
+    //     std::deque<int> num{1, 2, 3, 4, 5, 6, 7, 8, 9};
+    //     std::shuffle(std::begin(num), std::end(num), std::default_random_engine());
 
-        while(getNumber(coords.front() / ROWS, coords.front() % ROWS) != 0) {
-            coords.pop_front();
-        }
+    //     while(getNumber(coords.front() / ROWS, coords.front() % ROWS) != 0) {
+    //         coords.pop_front();
+    //     }
 
-        while(solver->isInvalidNumLocation(grid, coords.front() / ROWS, coords.front() % ROWS, num.front())) {
-            num.pop_front();
-        }
+    //     while(solver->isInvalidNumLocation(board, coords.front() / ROWS, coords.front() % ROWS, num.front())) {
+    //         num.pop_front();
+    //     }
 
-        setNumber(coords.front() / ROWS, coords.front() % ROWS, num.front());
-    }
+    //     setNumber(coords.front() / ROWS, coords.front() % ROWS, num.front());
+    // }
 }
 
 void Sudoku::processValidBoardInput(const int& r, const int& c, const int& num) {
     std::cout << "Setting row " << r << " and column " << c << " to " << num << '\n';
     setNumber(r, c, num);
-    solver->isInvalidNumLocation(grid, r, c, num);
+    solver->isInvalidNumLocation(board, r, c, num);
 }
 
 void Sudoku::printGrid() const {
@@ -185,7 +187,7 @@ void Sudoku::printGrid() const {
         std::cout << row << ' ';
         for(int col = 0; col < COLS; col++) {
             if(col % 3 == 0) std::cout << '|';
-            (grid[row][col]) ? std::cout << grid[row][col] : std::cout << " ";
+            (board[row][col].value) ? std::cout << board[row][col].value : std::cout << " ";
             std::cout << ' ';
         }
         std::cout << "|\n";
@@ -206,7 +208,7 @@ bool Sudoku::isBoardValid() const {
 }
 
 bool Sudoku::isBoardSolved() const {
-    return solver->isBoardSolved(grid);
+    return solver->isBoardSolved(board);
 }
 
 bool Sudoku::validNumber(const int& num) const {

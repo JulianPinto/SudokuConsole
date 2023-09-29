@@ -5,30 +5,12 @@ SudokuSolverBruteForce::SudokuSolverBruteForce() {}
 bool SudokuSolverBruteForce::isCorrect(const sudokuBoard& board) {
     for(int r = 0; r < ROWS; r++) {
         for(int c = 0; c < COLS; c++) {
-            if(board[r][c] != 0) {
-                int num = board[r][c];
+            if(board[r][c].value != 0) {
+                int num = board[r][c].value;
                 if(isInvalidNumLocation(board, r, c, num)) {
                     correct = false;
                     return false;
                 }
-            }
-        }
-    }
-    correct = true;
-    return true;
-}
-
-bool SudokuSolverBruteForce::isBoardSolved(const sudokuBoard& board) {
-    for(int r = 0; r < ROWS; r++) {
-        for(int c = 0; c < COLS; c++) {
-            int num = board[r][c];
-            if(num == 0) {
-                this->correct = false;
-                return false;
-            }
-            if(isInvalidNumLocation(board, r, c, num)) {
-                this->correct = false;
-                return false;
             }
         }
     }
