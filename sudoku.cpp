@@ -9,7 +9,7 @@
 
 #include "sudoku.h"
 
-Sudoku::Sudoku(SudokuSolver* solver) : board(ROWS, std::vector<sudokuSquare>(COLS)), solver(solver) {}
+Sudoku::Sudoku(SudokuSolver* solver) : board(ROWS, std::vector<int>(COLS, 0)), solver(solver) {}
 
 Sudoku::~Sudoku() {}
 
@@ -43,14 +43,12 @@ void Sudoku::run() {
 
 void Sudoku::resetGrid() {
     for(auto& row : board) {
-        for(auto& square : row) {
-            square.resetSquare();
-        }
+        std::fill(row.begin(), row.end(), 0);
     }
 }
 
 void Sudoku::setNumber(const int & r, const int & c, const int & num) {
-    board[r][c].value = num;
+    board[r][c] = num;
 }
 
 void Sudoku::mainMenu() {
@@ -150,7 +148,7 @@ void Sudoku::settings() {
 }
 
 int Sudoku::getNumber(const int & r, const int & c) const {
-    return board[r][c].value;
+    return board[r][c];
 }
 
 void Sudoku::makeRandomBoard(const int& numRandomInputs) {
@@ -187,7 +185,7 @@ void Sudoku::printGrid() const {
         std::cout << row << ' ';
         for(int col = 0; col < COLS; col++) {
             if(col % 3 == 0) std::cout << '|';
-            (board[row][col].value) ? std::cout << board[row][col].value : std::cout << " ";
+            (board[row][col]) ? std::cout << board[row][col] : std::cout << " ";
             std::cout << ' ';
         }
         std::cout << "|\n";

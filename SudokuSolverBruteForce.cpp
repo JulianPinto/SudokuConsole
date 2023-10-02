@@ -5,8 +5,8 @@ SudokuSolverBruteForce::SudokuSolverBruteForce() {}
 bool SudokuSolverBruteForce::isCorrect(const sudokuBoard& board) {
     for(int r = 0; r < ROWS; r++) {
         for(int c = 0; c < COLS; c++) {
-            if(board[r][c].value != 0) {
-                int num = board[r][c].value;
+            if(board[r][c] != 0) {
+                int num = board[r][c];
                 if(isInvalidNumLocation(board, r, c, num)) {
                     correct = false;
                     return false;
@@ -25,7 +25,7 @@ bool SudokuSolverBruteForce::isInvalidNumLocation(const sudokuBoard & board, con
 
 bool SudokuSolverBruteForce::onlyNumInRow(const sudokuBoard & board, const int & r, const int & c, const int & num) const {
     for(int i = 0; i < ROWS; i++) {
-        if(board[i][c].value == num && i != r)
+        if(board[i][c] == num && i != r)
             return false;
     }
     return true;
@@ -33,7 +33,7 @@ bool SudokuSolverBruteForce::onlyNumInRow(const sudokuBoard & board, const int &
 
 bool SudokuSolverBruteForce::onlyNumInCol(const sudokuBoard & board, const int & r, const int & c, const int & num) const {
     for(int i = 0; i < COLS; i++) {
-        if(board[r][i].value == num && i != c)
+        if(board[r][i] == num && i != c)
             return false;
     }
     return true;
@@ -45,7 +45,7 @@ bool SudokuSolverBruteForce::onlyNumIn3x3(const sudokuBoard & board, const int &
 
     for(int i = row * 3; i < (row + 1) * 3; i++) {
         for(int j = col * 3; j < (col + 1) * 3; j++) {
-            if(board[i][j].value == num && i != r && j != c)
+            if(board[i][j] == num && i != r && j != c)
                 return false;
         }
     }
