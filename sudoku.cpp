@@ -2,20 +2,16 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <string>
-#include <algorithm>
-#include <random>
-#include <deque>
-#include <numeric>
 
 #include "sudoku.h"
 
-Sudoku::Sudoku(SudokuSolver* solver) : board(ROWS, std::vector<int>(COLS, 0)), solver(solver) {}
+Sudoku::Sudoku(SudokuSolver* solver) : board(ROWS, std::vector<int>(COLS, 0)), solver(solver), boardMaker(&board) {}
 
 Sudoku::~Sudoku() {}
 
 void Sudoku::run() {
     while(1) {
-        system("clear");
+        // system("clear");
         switch(state) {
             case State::mainMenu:
                 mainMenu();
@@ -80,37 +76,24 @@ void Sudoku::newBoard() {
     std::cin >> option;
     switch (option) {
     case 1: // easy
-        makeRandomBoard(30);
+        makeSudokuBoard(SudokuDifficulty::easy);
         state = State::playing;
         break;
     case 2: // medium
-        makeRandomBoard(20);
+        makeSudokuBoard(SudokuDifficulty::medium);
         state = State::playing;
         break;
     case 3: // hard
-        makeRandomBoard(10);
+        makeSudokuBoard(SudokuDifficulty::hard);
         state = State::playing;
         break;
-    case 4: // custom
-        customGridMenu();
-        state = State::playing;
-        break;
-    case 5: // back
+    case 4: // back
         state = State::mainMenu;
         break;
     default:
         std::cout << "Invalid input\n";
         break;
     }
-}
-
-void Sudoku::customGridMenu() {
-    int num = -1;
-    while(num < 0 && num >= ROWS * COLS) {
-        std::cout << "Enter how many numbers you want set on your board\n";
-        std::cin >> num;
-    }
-    makeRandomBoard(num);
 }
 
 void Sudoku::playBoard() {
@@ -151,25 +134,8 @@ int Sudoku::getNumber(const int & r, const int & c) const {
     return board[r][c];
 }
 
-void Sudoku::makeRandomBoard(const int& numRandomInputs) {
-    // for(int i = 0; i < numRandomInputs; i++) {
-    //     std::deque<int> coords(ROWS * COLS);
-    //     std::iota(std::begin(coords), std::end(coords), 0);
-    //     std::shuffle(std::begin(coords), std::end(coords), std::default_random_engine());
-
-    //     std::deque<int> num{1, 2, 3, 4, 5, 6, 7, 8, 9};
-    //     std::shuffle(std::begin(num), std::end(num), std::default_random_engine());
-
-    //     while(getNumber(coords.front() / ROWS, coords.front() % ROWS) != 0) {
-    //         coords.pop_front();
-    //     }
-
-    //     while(solver->isInvalidNumLocation(board, coords.front() / ROWS, coords.front() % ROWS, num.front())) {
-    //         num.pop_front();
-    //     }
-
-    //     setNumber(coords.front() / ROWS, coords.front() % ROWS, num.front());
-    // }
+void Sudoku::makeSudokuBoard(const SudokuDifficulty& dif) {
+    boardMaker.createSudokuBoard(dif);
 }
 
 void Sudoku::processValidBoardInput(const int& r, const int& c, const int& num) {
@@ -237,7 +203,7 @@ void Sudoku::printSettings() const {
 }
 
 void Sudoku::printNewBoardMenu() const {
-    std::cout << "New Board\n1: Easy\n2: Medium\n3: Hard\n4: Custom Board\n5: Back\n";
+    std::cout << "New Board\n1: Easy\n2: Medium\n3: Hard\n4: Back\n";
 }
 
 void Sudoku::printHorizontal() const {

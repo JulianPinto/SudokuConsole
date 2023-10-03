@@ -2,6 +2,8 @@
 
 SudokuSolverBruteForce::SudokuSolverBruteForce() {}
 
+SudokuSolverBruteForce::~SudokuSolverBruteForce(){}
+
 bool SudokuSolverBruteForce::isCorrect(const sudokuBoard& board) {
     for(int r = 0; r < ROWS; r++) {
         for(int c = 0; c < COLS; c++) {

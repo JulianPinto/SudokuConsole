@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "SudokuSolver.h"
+#include "sudokuBoardMaker.h"
 #include "Constants.h"
 
 class Sudoku
@@ -18,6 +19,7 @@ private:
     State state{State::mainMenu};
     sudokuBoard board;
     SudokuSolver* solver;
+    sudokuBoardMaker boardMaker;
     bool errorCheck{false};
 
 public:
@@ -26,14 +28,15 @@ public:
     void run();
 
 private:
+    // menu functions
     void mainMenu();
     void newBoard();
     void playBoard();
     void settings();
 
+    // board functions
     void resetGrid();
-    void makeRandomBoard(const int& numRandomInputs);
-    void customGridMenu();
+    void makeSudokuBoard(const SudokuDifficulty& dif);
     void processValidBoardInput(const int& r, const int& c, const int& num);
     void setNumber(const int& r, const int& c, const int& num);
     int getNumber(const int& r, const int& c) const;
@@ -45,6 +48,7 @@ private:
     bool isBoardValid() const;
     bool isBoardSolved() const;
 
+    // print functions
     void printGrid() const;
     void printMenu() const;
     void printSettings() const;

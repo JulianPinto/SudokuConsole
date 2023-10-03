@@ -14,11 +14,27 @@ void sudokuSquare::addPossibleValue(const int & val) {
     possibleValues.insert(val);
 }
 
-inline bool sudokuSquare::isPossibleValue(const int & val) {
+void sudokuSquare::setOnlyValue(const int & val) {
+    possibleValues.clear();
+    possibleValues.insert(val);
+}
+
+std::vector<int> sudokuSquare::getPossibleValues() {
+    return std::vector<int>(possibleValues.begin(), possibleValues.end());
+}
+
+bool sudokuSquare::isPossibleValue(const int & val) const {
     return possibleValues.count(val);
 }
 
+bool sudokuSquare::isOnlyValue(const int & val) const {
+    return countPossibleValues() == 1 && isPossibleValue(val);
+}
+
+int sudokuSquare::countPossibleValues() const {
+    return possibleValues.size();
+}
+
 void sudokuSquare::resetSquare() {
-    value = 0;
     possibleValues.insert(std::begin(allValues), std::end(allValues));
 }

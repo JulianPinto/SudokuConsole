@@ -12,9 +12,11 @@ public:
 
     void removePossibleValue(const int& val);
     void addPossibleValue(const int& val);
-    bool isPossibleValue(const int& val);
-
-    int value{0};
+    void setOnlyValue(const int& val);
+    std::vector<int> getPossibleValues();
+    bool isPossibleValue(const int& val) const;
+    bool isOnlyValue(const int& val) const;
+    int countPossibleValues() const;
 
 private:
     std::unordered_set<int> possibleValues;
