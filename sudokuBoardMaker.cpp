@@ -65,18 +65,35 @@ void sudokuBoardMaker::makeBoard(const int & givenNumbers) {
 
 void sudokuBoardMaker::shuffleStarterBoard() {
     for(int i = 0; i < 3; i++) {
-        std::shuffle(std::begin(starter), std::end(starter), std::default_random_engine());
 
-        std::vector<int> indexes(COLS);
-        std::iota(std::begin(indexes), std::end(indexes), 0);
-        std::shuffle(std::begin(indexes), std::end(indexes), std::default_random_engine());
-
+        // std::shuffle(std::begin(starter), std::end(starter), std::default_random_engine());
+        std::vector<int> vertSectionOrder = makeRandomIndexes(COLS / 3);
         for(auto& row : starter) {
-            for(int c = 0; c < COLS; c++) {
-                std::swap(row[c], row[indexes[c]]);
+            for(int sector = 0; sector < COLS / 3; sector++) {
+                std::vector<int> vertInnerSectionOrder = makeRandomIndexes(COLS / 3);
+                for(int c = 0; c < COLS / 3; c++) {
+                    std::swap(row[sector * 3 + c], row[vertSectionOrder[sector] * 3 + vertInnerSectionOrder[c]]);
+                }
+            }
+        }
+
+        std::vector<int> horzSectionOrder = makeRandomIndexes(ROWS / 3);
+        for(int c = 0; c < COLS; c++) {
+            for(int sector = 0; sector < ROWS / 3; sector++) {
+                std::vector<int> horzInnerSectionOrder = makeRandomIndexes(ROWS / 3);
+                for(int r = 0; r < ROWS / 3; r++) {
+                    std::swap(starter[sector * 3 + r][c], starter[vertSectionOrder[sector] * 3 + horzInnerSectionOrder[r]][c]);
+                }
             }
         }
     }
+}
+
+std::vector<int> sudokuBoardMaker::makeRandomIndexes(const int & numIndex) {
+    std::vector<int> indexes(numIndex);
+    std::iota(std::begin(indexes), std::end(indexes), 0);
+    std::shuffle(std::begin(indexes), std::end(indexes), std::default_random_engine());
+    return indexes;
 }
 
 void sudokuBoardMaker::setValue(const int & r, const int & c, const int & num) {

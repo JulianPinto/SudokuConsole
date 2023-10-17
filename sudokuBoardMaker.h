@@ -19,6 +19,7 @@ public:
 private:
     void makeBoard(const int& givenNumbers);
     void shuffleStarterBoard();
+    std::vector<int> makeRandomIndexes(const int & numIndex);
     void setValue(const int& r, const int& c, const int& num);
 
     void removeValueFromRow(const int& r, const int& c, const int& num);
