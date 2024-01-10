@@ -1,24 +1,21 @@
 #pragma once
-
-#include <unordered_set>
-#include <vector>
-
 class sudokuSquare
 {
 public:
     sudokuSquare();
+    sudokuSquare(const int& val);
     ~sudokuSquare();
     void resetSquare();
+    void makeFixed();
+    void unFixSquare();
+    void hideValue();
+    void showValue();
 
-    void removePossibleValue(const int& val);
-    void addPossibleValue(const int& val);
-    void setOnlyValue(const int& val);
-    std::vector<int> getPossibleValues();
-    bool isPossibleValue(const int& val) const;
-    bool isOnlyValue(const int& val) const;
-    int countPossibleValues() const;
+    sudokuSquare& operator=(const int& val);
+    operator int() const;
 
 private:
-    std::unordered_set<int> possibleValues;
-    const std::vector<int> allValues{1,2,3,4,5,6,7,8,9};
+    int value{0};
+    bool visible{false};
+    bool fixed{false};
 };
