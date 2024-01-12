@@ -1,15 +1,15 @@
 #include "SudokuBoardMaker.h"
-#include <deque>
+#include <queue>
 #include <numeric>
 #include <random>
 #include <iostream>
 #include <algorithm>
 
 sudokuBoardMaker::sudokuBoardMaker(sudokuBoard* sudokuBoard) : boardPointer(sudokuBoard), starter(ROWS, std::vector<int>(COLS, 0)) {
-    for(int r = 0; r < ROWS; r++) {
-        std::iota(std::begin(starter[r]), std::end(starter[r]), 1);
-        std::rotate(starter[r].begin(), starter[r].begin() + ((3 * r) % ROWS) + (r / 3), starter[r].end());
-    }
+    // for(int r = 0; r < ROWS; r++) {
+    //     std::iota(std::begin(starter[r]), std::end(starter[r]), 1);
+    //     std::rotate(starter[r].begin(), starter[r].begin() + ((3 * r) % ROWS) + (r / 3), starter[r].end());
+    // }
 }
 
 sudokuBoardMaker::~sudokuBoardMaker(){}
@@ -30,7 +30,7 @@ void sudokuBoardMaker::createSudokuBoard(const SudokuDifficulty & dif) {
 }
 
 void sudokuBoardMaker::makeBoard(const int & givenNumbers) {
-    // shuffleStarterBoard();
+    fillIndependentSubGrids();
 
     for(int i = 0; i < ROWS; i++) {
         for(int j = 0; j < COLS; j++) {
@@ -63,6 +63,10 @@ void sudokuBoardMaker::makeBoard(const int & givenNumbers) {
     // }
 }
 
+void sudokuBoardMaker::fillIndependentSubGrids() {
+    
+}
+
 void sudokuBoardMaker::shuffleStarterBoard() {
     for(int i = 0; i < 3; i++) {
 
@@ -89,7 +93,19 @@ void sudokuBoardMaker::shuffleStarterBoard() {
     }
 }
 
-std::vector<int> sudokuBoardMaker::makeRandomIndexes(const int & numIndex) {
+void sudokuBoardMaker::randomFillSubMatrix(const int &row, const int &col) {
+    auto randomSequence = makeRandomIndexes(9);
+    std::queue<int> sequence(std::begin(randomSequence), std::end(randomSequence));
+    for(int r = 0; r < 3; r++) {
+        for(int c = 0; c < 3; c++) {
+            starter[row * 3 + r][col * 3 + c] = sequence.top();
+            sequence.pop();
+        }
+    }
+}
+
+std::vector<int> sudokuBoardMaker::makeRandomIndexes(const int &numIndex)
+{
     std::vector<int> indexes(numIndex);
     std::iota(std::begin(indexes), std::end(indexes), 0);
     std::shuffle(std::begin(indexes), std::end(indexes), std::default_random_engine());

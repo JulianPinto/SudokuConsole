@@ -8,7 +8,6 @@ class sudokuBoardMaker
 private:
     // std::vector<std::vector<sudokuSquare>> possibleValues;
     sudokuBoard* boardPointer;
-    sudokuBoard starter;
 
 public:
     sudokuBoardMaker(sudokuBoard* sudokuBoard);
@@ -18,13 +17,15 @@ public:
 
 private:
     void makeBoard(const int& givenNumbers);
-    void shuffleStarterBoard();
+    void fillIndependentSubGrids();
+    // void shuffleStarterBoard();
+    void randomFillSubMatrix(const int& r, const int& c);
     std::vector<int> makeRandomIndexes(const int & numIndex);
     void setValue(const int& r, const int& c, const int& num);
 
-    void removeValueFromRow(const int& r, const int& c, const int& num);
-    void removeValueFromCol(const int& r, const int& c, const int& num);
-    void removeValueFrom3x3(const int& r, const int& c, const int& num);
+    // void removeValueFromRow(const int& r, const int& c, const int& num);
+    // void removeValueFromCol(const int& r, const int& c, const int& num);
+    // void removeValueFrom3x3(const int& r, const int& c, const int& num);
 
     // bool validInput(const int& row, const int& col, const int& num) const;
     // bool validInRow(const int& r, const int& c, const int& num) const;
