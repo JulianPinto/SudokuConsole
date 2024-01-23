@@ -1,11 +1,11 @@
 #include "SudokuBoardMaker.h"
-#include <queue>
 #include <numeric>
 #include <random>
 #include <iostream>
 #include <algorithm>
+#include <chrono>
 
-sudokuBoardMaker::sudokuBoardMaker(sudokuBoard* sudokuBoard) : boardPointer(sudokuBoard), starter(ROWS, std::vector<int>(COLS, 0)) {
+sudokuBoardMaker::sudokuBoardMaker(sudokuBoard* sudokuBoard) : boardPointer(sudokuBoard) {
     // for(int r = 0; r < ROWS; r++) {
     //     std::iota(std::begin(starter[r]), std::end(starter[r]), 1);
     //     std::rotate(starter[r].begin(), starter[r].begin() + ((3 * r) % ROWS) + (r / 3), starter[r].end());
@@ -31,12 +31,13 @@ void sudokuBoardMaker::createSudokuBoard(const SudokuDifficulty & dif) {
 
 void sudokuBoardMaker::makeBoard(const int & givenNumbers) {
     fillIndependentSubGrids();
+    fillBoard();
 
-    for(int i = 0; i < ROWS; i++) {
-        for(int j = 0; j < COLS; j++) {
-            setValue(i, j, starter[i][j]);
-        }
-    }
+    // for(int i = 0; i < ROWS; i++) {
+    //     for(int j = 0; j < COLS; j++) {
+    //         setValue(i, j, (*boardPointer)[i][j]);
+    //     }
+    // }
     // std::deque<int> coords(ROWS * COLS);
     // std::iota(std::begin(coords), std::end(coords), 0);
     // std::shuffle(std::begin(coords), std::end(coords), std::default_random_engine());
@@ -64,15 +65,17 @@ void sudokuBoardMaker::makeBoard(const int & givenNumbers) {
 }
 
 void sudokuBoardMaker::fillIndependentSubGrids() {
-    
+    randomFillSubMatrix(0, 0);
+    randomFillSubMatrix(1, 1);
+    randomFillSubMatrix(2, 2);
 }
-
+/*
 void sudokuBoardMaker::shuffleStarterBoard() {
     for(int i = 0; i < 3; i++) {
 
         // std::shuffle(std::begin(starter), std::end(starter), std::default_random_engine());
         std::vector<int> vertSectionOrder = makeRandomIndexes(COLS / 3);
-        for(auto& row : starter) {
+        for(auto& row : (*boardPointer)) {
             for(int sector = 0; sector < COLS / 3; sector++) {
                 std::vector<int> vertInnerSectionOrder = makeRandomIndexes(COLS / 3);
                 for(int c = 0; c < COLS / 3; c++) {
@@ -92,24 +95,33 @@ void sudokuBoardMaker::shuffleStarterBoard() {
         }
     }
 }
-
+*/
 void sudokuBoardMaker::randomFillSubMatrix(const int &row, const int &col) {
-    auto randomSequence = makeRandomIndexes(9);
-    std::queue<int> sequence(std::begin(randomSequence), std::end(randomSequence));
+    std::queue<int> sequence = makeRandomNumberQueue(9);
     for(int r = 0; r < 3; r++) {
         for(int c = 0; c < 3; c++) {
-            starter[row * 3 + r][col * 3 + c] = sequence.top();
+            (*boardPointer)[row * 3 + r][col * 3 + c] = sequence.front();
             sequence.pop();
         }
     }
 }
 
-std::vector<int> sudokuBoardMaker::makeRandomIndexes(const int &numIndex)
-{
-    std::vector<int> indexes(numIndex);
-    std::iota(std::begin(indexes), std::end(indexes), 0);
-    std::shuffle(std::begin(indexes), std::end(indexes), std::default_random_engine());
-    return indexes;
+void sudokuBoardMaker::fillBoard() {
+    
+}
+
+std::queue<int> sudokuBoardMaker::makeRandomNumberQueue(const int &nums) {
+    std::vector<int> indexes(nums);
+    std::iota(std::begin(indexes), std::end(indexes), 1);
+
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine e(seed);
+    std::shuffle(std::begin(indexes), std::end(indexes), e);
+
+    std::queue<int> queue;
+    for(int i = 0; i < indexes.size(); i++)
+        queue.push(indexes[i]);
+    return queue;
 }
 
 void sudokuBoardMaker::setValue(const int & r, const int & c, const int & num) {

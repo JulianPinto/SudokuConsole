@@ -10,6 +10,7 @@ public:
     void unFixSquare();
     void hideValue();
     void showValue();
+    int& getValue();
 
     sudokuSquare& operator=(const int& val);
     operator int() const;

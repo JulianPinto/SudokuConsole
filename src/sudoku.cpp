@@ -5,7 +5,7 @@
 
 #include "sudoku.h"
 
-Sudoku::Sudoku(SudokuSolver* solver) : board(ROWS, std::vector<int>(COLS, 0)), solver(solver), boardMaker(&board) {}
+Sudoku::Sudoku(SudokuSolver* solver) : board(ROWS, std::vector<sudokuSquare>(COLS, 0)), solver(solver), boardMaker(&board) {}
 
 Sudoku::~Sudoku() {}
 
@@ -39,7 +39,9 @@ void Sudoku::run() {
 
 void Sudoku::resetGrid() {
     for(auto& row : board) {
-        std::fill(row.begin(), row.end(), 0);
+        for(auto& square : row) {
+            square.resetSquare();
+        }
     }
 }
 
@@ -106,6 +108,7 @@ void Sudoku::playBoard() {
         processValidBoardInput(r, c, num);
     } else if(r == c == num == 0) {
         std::cout << "Exiting game\n";
+        resetGrid();
         state = State::mainMenu;
     } else {
         std::cout << "invalid input\n";

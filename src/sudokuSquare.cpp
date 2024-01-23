@@ -29,8 +29,13 @@ void sudokuSquare::showValue() {
     visible = true;
 }
 
+int& sudokuSquare::getValue() {
+    return  value;
+}
+
 sudokuSquare& sudokuSquare::operator= (const int& val) {
     value = val;
+    return *this;
 }
 
 sudokuSquare::operator int() const {

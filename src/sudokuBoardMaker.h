@@ -2,11 +2,11 @@
 #include "Constants.h"
 #include "sudokuSquare.h"
 #include <vector>
+#include <queue>
 
 class sudokuBoardMaker
 {
 private:
-    // std::vector<std::vector<sudokuSquare>> possibleValues;
     sudokuBoard* boardPointer;
 
 public:
@@ -18,9 +18,10 @@ public:
 private:
     void makeBoard(const int& givenNumbers);
     void fillIndependentSubGrids();
+    void fillBoard();
     // void shuffleStarterBoard();
     void randomFillSubMatrix(const int& r, const int& c);
-    std::vector<int> makeRandomIndexes(const int & numIndex);
+    std::queue<int> makeRandomNumberQueue(const int & nums);
     void setValue(const int& r, const int& c, const int& num);
 
     // void removeValueFromRow(const int& r, const int& c, const int& num);

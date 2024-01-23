@@ -1,7 +1,7 @@
 .vscode/*
 .vscode
-*.out
 build
+sudoku
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json

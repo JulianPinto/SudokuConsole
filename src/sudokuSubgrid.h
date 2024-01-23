@@ -6,7 +6,7 @@
 
 class sudokuSubgrid {
 public:
-  sudokuSubgrid(const sudokuBoard* subGrid, const int& r, const int& c);
+  sudokuSubgrid(sudokuBoard* subGrid, const int& r, const int& c);
   ~sudokuSubgrid();
 
   void fillSubgrid();
