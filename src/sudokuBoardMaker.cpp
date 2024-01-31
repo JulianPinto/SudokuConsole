@@ -97,7 +97,7 @@ void sudokuBoardMaker::shuffleStarterBoard() {
 }
 */
 void sudokuBoardMaker::randomFillSubMatrix(const int &row, const int &col) {
-    std::queue<int> sequence = makeRandomNumberQueue(9);
+    std::queue<int> sequence = makeRandomNumberQueue(1, 9);
     for(int r = 0; r < 3; r++) {
         for(int c = 0; c < 3; c++) {
             (*boardPointer)[row * 3 + r][col * 3 + c] = sequence.front();
@@ -107,12 +107,40 @@ void sudokuBoardMaker::randomFillSubMatrix(const int &row, const int &col) {
 }
 
 void sudokuBoardMaker::fillBoard() {
-    
+    std::queue<int> allSquares = makeRandomNumberQueue(0, ROWS * COLS);
+    fillRemainingBoard(allSquares);
 }
 
-std::queue<int> sudokuBoardMaker::makeRandomNumberQueue(const int &nums) {
+// TODO: change to use sudokuSolver to remove code duplication
+bool sudokuBoardMaker::fillRemainingBoard(std::queue<int>& allSquares) {
+    while(getSquareFrom1D(*boardPointer, allSquares.front()).getValue() != 0 && !allSquares.empty()) {
+        allSquares.pop();
+    }
+    
+    if(allSquares.empty())
+        return true;
+
+    std::queue<int> possibleValues = makeRandomNumberQueue(1, 9);
+    const int currentSquareRow = allSquares.front() / COLS;
+    const int currentSquareCol = allSquares.front() % COLS;
+    while(!possibleValues.empty()) {
+        if(validInput(currentSquareRow, currentSquareCol, possibleValues.front())) {
+            (*boardPointer)[currentSquareRow][currentSquareCol] = possibleValues.front();
+            bool valueWorks = fillRemainingBoard(allSquares);
+            if(valueWorks) {
+                return true;
+            }
+        }
+        (*boardPointer)[currentSquareRow][currentSquareCol] = 0;
+        possibleValues.pop();
+    }
+    allSquares.push(currentSquareRow * COLS + currentSquareCol);
+    return false;
+}
+
+std::queue<int> sudokuBoardMaker::makeRandomNumberQueue(const int& start, const int &nums) {
     std::vector<int> indexes(nums);
-    std::iota(std::begin(indexes), std::end(indexes), 1);
+    std::iota(std::begin(indexes), std::end(indexes), start);
 
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::default_random_engine e(seed);
@@ -158,35 +186,35 @@ void sudokuBoardMaker::setValue(const int & r, const int & c, const int & num) {
 //     }
 // }
 
-// bool sudokuBoardMaker::validInput(const int & row, const int & col, const int & num) const {
-//     return validInRow(row, col, num) && validInCol(row, col, num) && validIn3x3(row, col, num);
-// }
+bool sudokuBoardMaker::validInput(const int & row, const int & col, const int & num) const {
+    return validInRow(row, col, num) && validInCol(row, col, num) && validIn3x3(row, col, num);
+}
 
-// bool sudokuBoardMaker::validInRow(const int & r, const int & c, const int & num) const {
-//     for(int i = 0; i < ROWS; i++) {
-//         if(i != r && possibleValues[i][c].isOnlyValue(num))
-//             return false;
-//     }
-//     return true;
-// }
+bool sudokuBoardMaker::validInRow(const int & r, const int & c, const int & num) const {
+    for(int i = 0; i < ROWS; i++) {
+        if(i != r && (*boardPointer)[i][c].getValue() == num)
+            return false;
+    }
+    return true;
+}
 
-// bool sudokuBoardMaker::validInCol(const int & r, const int & c, const int & num) const {
-//     for(int i = 0; i < COLS; i++) {
-//         if(i != c && possibleValues[r][i].isOnlyValue(num))
-//             return false;
-//     }
-//     return true;
-// }
+bool sudokuBoardMaker::validInCol(const int & r, const int & c, const int & num) const {
+    for(int i = 0; i < COLS; i++) {
+        if(i != c && (*boardPointer)[r][i].getValue() == num)
+            return false;
+    }
+    return true;
+}
 
-// bool sudokuBoardMaker::validIn3x3(const int & r, const int & c, const int & num) const {
-//     int row = r / 3;
-//     int col = c / 3;
+bool sudokuBoardMaker::validIn3x3(const int & r, const int & c, const int & num) const {
+    int row = r / 3;
+    int col = c / 3;
 
-//     for(int i = row * 3; i < (row + 1) * 3; i++) {
-//         for(int j = col * 3; j < (col + 1) * 3; j++) {
-//             if(i != r && j != c && possibleValues[i][j].isOnlyValue(num))
-//                 return false;
-//         }
-//     }
-//     return true;
-// }
+    for(int i = row * 3; i < (row + 1) * 3; i++) {
+        for(int j = col * 3; j < (col + 1) * 3; j++) {
+            if(i != r && j != c && (*boardPointer)[i][j].getValue() == num)
+                return false;
+        }
+    }
+    return true;
+}

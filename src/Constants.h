@@ -11,3 +11,9 @@ enum class SudokuDifficulty: int {
 typedef std::vector<std::vector<sudokuSquare>> sudokuBoard;
 const int ROWS{9};
 const int COLS{9};
+
+sudokuSquare& getSquareFrom1D(sudokuBoard& board, int& coord) {
+    int row = coord / COLS;
+    int col = coord % ROWS;
+    return board[row][col];
+}
