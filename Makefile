@@ -11,7 +11,7 @@ OBJS := $(subst $(SRC)/,$(BUILD)/,$(addsuffix .o,$(basename $(SRCS))))
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	@echo "Building..."
+	echo "Building..."
 	mkdir -p $(dir $@)
 	$(CXX) $(OBJS) -o $@
 

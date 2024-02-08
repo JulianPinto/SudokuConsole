@@ -8,15 +8,16 @@ public:
     void resetSquare();
     void makeFixed();
     void unFixSquare();
-    void hideValue();
-    void showValue();
+    int getDisplay();
+    void setDisplay(const int& val);
     int& getValue();
+    bool isCorrect();
 
     sudokuSquare& operator=(const int& val);
     operator int() const;
 
 private:
     int value{0};
-    bool visible{false};
+    int display{0};
     bool fixed{false};
 };

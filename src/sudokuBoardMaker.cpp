@@ -1,9 +1,6 @@
 #include "SudokuBoardMaker.h"
-#include <numeric>
-#include <random>
+#include "helpers.h"
 #include <iostream>
-#include <algorithm>
-#include <chrono>
 
 sudokuBoardMaker::sudokuBoardMaker(sudokuBoard* sudokuBoard) : boardPointer(sudokuBoard) {
     // for(int r = 0; r < ROWS; r++) {
@@ -97,7 +94,7 @@ void sudokuBoardMaker::shuffleStarterBoard() {
 }
 */
 void sudokuBoardMaker::randomFillSubMatrix(const int &row, const int &col) {
-    std::queue<int> sequence = makeRandomNumberQueue(1, 9);
+    std::queue<int> sequence = helpers::makeRandomNumberQueue(1, 9);
     for(int r = 0; r < 3; r++) {
         for(int c = 0; c < 3; c++) {
             (*boardPointer)[row * 3 + r][col * 3 + c] = sequence.front();
@@ -107,20 +104,20 @@ void sudokuBoardMaker::randomFillSubMatrix(const int &row, const int &col) {
 }
 
 void sudokuBoardMaker::fillBoard() {
-    std::queue<int> allSquares = makeRandomNumberQueue(0, ROWS * COLS);
+    std::queue<int> allSquares = helpers::makeRandomNumberQueue(0, ROWS * COLS);
     fillRemainingBoard(allSquares);
 }
 
 // TODO: change to use sudokuSolver to remove code duplication
 bool sudokuBoardMaker::fillRemainingBoard(std::queue<int>& allSquares) {
-    while(getSquareFrom1D(*boardPointer, allSquares.front()).getValue() != 0 && !allSquares.empty()) {
+    while(helpers::getSquareFrom1D(*boardPointer, allSquares.front()).getValue() != 0 && !allSquares.empty()) {
         allSquares.pop();
     }
     
     if(allSquares.empty())
         return true;
 
-    std::queue<int> possibleValues = makeRandomNumberQueue(1, 9);
+    std::queue<int> possibleValues = helpers::makeRandomNumberQueue(1, 9);
     const int currentSquareRow = allSquares.front() / COLS;
     const int currentSquareCol = allSquares.front() % COLS;
     while(!possibleValues.empty()) {
@@ -136,20 +133,6 @@ bool sudokuBoardMaker::fillRemainingBoard(std::queue<int>& allSquares) {
     }
     allSquares.push(currentSquareRow * COLS + currentSquareCol);
     return false;
-}
-
-std::queue<int> sudokuBoardMaker::makeRandomNumberQueue(const int& start, const int &nums) {
-    std::vector<int> indexes(nums);
-    std::iota(std::begin(indexes), std::end(indexes), start);
-
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::default_random_engine e(seed);
-    std::shuffle(std::begin(indexes), std::end(indexes), e);
-
-    std::queue<int> queue;
-    for(int i = 0; i < indexes.size(); i++)
-        queue.push(indexes[i]);
-    return queue;
 }
 
 void sudokuBoardMaker::setValue(const int & r, const int & c, const int & num) {

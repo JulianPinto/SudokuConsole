@@ -22,7 +22,6 @@ private:
     bool fillRemainingBoard(std::queue<int>& allSquares);
     // void shuffleStarterBoard();
     void randomFillSubMatrix(const int& r, const int& c);
-    std::queue<int> makeRandomNumberQueue(const int& start, const int & nums);
     void setValue(const int& r, const int& c, const int& num);
 
     // void removeValueFromRow(const int& r, const int& c, const int& num);
