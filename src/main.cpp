@@ -1,6 +1,5 @@
 #include <iostream>
 #include <stdio.h>
-#include <memory>
 #include "sudoku.h"
 #include "SudokuSolverBruteForce.h"
 

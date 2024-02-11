@@ -46,7 +46,7 @@ void Sudoku::resetGrid() {
 }
 
 void Sudoku::setNumber(const int & r, const int & c, const int & num) {
-    board[r][c] = num;
+    board[r][c].setDisplay(num);
 }
 
 void Sudoku::mainMenu() {
@@ -103,8 +103,7 @@ void Sudoku::playBoard() {
     std::cout << "Enter the coordinates then the number to place at the coordinates.\nE.G. 0, 2, 2 would place a 2 at row 0 column 2\nOr enter 0 0 0 to exit the game\n";
     int r = -1, c = -1, num = -1;
     std::cin >> r >> c >> num;
-    bool validInput = validCoordinate(r) && validCoordinate(c) && validNumber(num);
-    if(validInput) {
+    if(inputValid(r, c, num)) {
         processValidBoardInput(r, c, num);
     } else if(r == c == num == 0) {
         std::cout << "Exiting game\n";
@@ -133,10 +132,6 @@ void Sudoku::settings() {
     }
 }
 
-int Sudoku::getNumber(const int & r, const int & c) const {
-    return board[r][c];
-}
-
 void Sudoku::makeSudokuBoard(const SudokuDifficulty& dif) {
     boardMaker.createSudokuBoard(dif);
 }
@@ -144,7 +139,6 @@ void Sudoku::makeSudokuBoard(const SudokuDifficulty& dif) {
 void Sudoku::processValidBoardInput(const int& r, const int& c, const int& num) {
     std::cout << "Setting row " << r << " and column " << c << " to " << num << '\n';
     setNumber(r, c, num);
-    solver->isInvalidNumLocation(board, r, c, num);
 }
 
 void Sudoku::printGrid() const {
@@ -154,12 +148,22 @@ void Sudoku::printGrid() const {
         std::cout << row << ' ';
         for(int col = 0; col < COLS; col++) {
             if(col % 3 == 0) std::cout << '|';
-            (board[row][col]) ? std::cout << board[row][col] : std::cout << " ";
-            std::cout << ' ';
+            printNumber(col, row);
         }
         std::cout << "|\n";
     }
     printHorizontal();
+}
+
+void Sudoku::printNumber(const int& col, const int& row) const {
+    if(board[col][row].isFixed()) {
+        std::cout << CORRECT_COLOR << board[col][row] << RESET_COLOR;
+    } else if(board[col][row].getDisplay() != 0) {
+        std::cout << board[col][row].getDisplay();
+    } else {
+        std::cout << ' ';
+    }
+    std::cout << ' ';
 }
 
 void Sudoku::checkBoardComplete() {
@@ -185,10 +189,18 @@ bool Sudoku::validNumber(const int& num) const {
     return false;
 }
 
-bool Sudoku::validCoordinate(const int& coord) const {
-    if(coord >= 0 && coord < 9)
-        return true;
-    return false;
+bool Sudoku::validCoordinates(const int& row, const int& col) const {
+    if(row < 0 || row > 9 || col < 0 || col > 9)
+        return false;
+    if(board[row][col].isFixed())
+        return false;
+    return true;
+}
+
+bool Sudoku::inputValid(const int& r, const int& c, const int& num) {
+    if(!validNumber(num) || !validCoordinates(r, c)) {
+        return false;
+    }
 }
 
 int Sudoku::getRandomNumber() const {

@@ -21,7 +21,11 @@ void sudokuSquare::unFixSquare() {
     fixed = false;
 }
 
-int sudokuSquare::getDisplay() {
+bool sudokuSquare::isFixed() const {
+    return fixed;
+}
+
+int sudokuSquare::getDisplay() const {
     return display;
 }
 
@@ -30,10 +34,10 @@ void sudokuSquare::setDisplay(const int& val) {
 }
 
 int& sudokuSquare::getValue() {
-    return  value;
+    return value;
 }
 
-bool sudokuSquare::isCorrect() {
+bool sudokuSquare::isCorrect() const {
     return value == display;
 }
 
