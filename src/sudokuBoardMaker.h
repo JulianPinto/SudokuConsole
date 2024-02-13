@@ -13,10 +13,9 @@ public:
     sudokuBoardMaker(sudokuBoard* sudokuBoard);
     ~sudokuBoardMaker();
 
-    void createSudokuBoard(const SudokuDifficulty& dif);
+    void createSudokuBoard();
 
 private:
-    void makeBoard(const int& givenNumbers);
     void fillIndependentSubGrids();
     void fillBoard();
     bool fillRemainingBoard(std::queue<int>& allSquares);

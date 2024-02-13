@@ -40,7 +40,9 @@ private:
 
     // board functions
     void resetGrid();
-    void makeSudokuBoard(const SudokuDifficulty& dif);
+    void makeSudokuBoard();
+    void displayStarterNumbers(const SudokuDifficulty& dif);
+    void hideNumbers(const int& dif);
     void processValidBoardInput(const int& r, const int& c, const int& num);
     void setNumber(const int& r, const int& c, const int& num);
     bool validNumber(const int& num) const;

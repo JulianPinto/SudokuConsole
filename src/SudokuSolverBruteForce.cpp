@@ -7,20 +7,23 @@ SudokuSolverBruteForce::~SudokuSolverBruteForce(){}
 bool SudokuSolverBruteForce::isCorrect(const sudokuBoard& board) {
     for(int r = 0; r < ROWS; r++) {
         for(int c = 0; c < COLS; c++) {
-            if(board[r][c] != 0) {
-                int num = board[r][c];
-                if(isInvalidNumLocation(board, r, c, num)) {
-                    correct = false;
+            int num = board[r][c].getDisplay();
+            if(num != 0) {
+                if(!isInvalidNumLocation(board, r, c, num)) {
                     return false;
                 }
             }
         }
     }
-    correct = true;
     return true;
 }
 
 bool SudokuSolverBruteForce::isInvalidNumLocation(const sudokuBoard & board, const int & r, const int & c, const int & num) {
-    correct = validInput(board, r, c, num);
-    return !correct;
+    return validInput(board, r, c, num);
+
+}
+
+//TODO
+int SudokuSolverBruteForce::numUniqueSolutions(sudokuBoard & board) {
+    return 1;
 }

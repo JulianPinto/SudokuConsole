@@ -6,22 +6,7 @@ sudokuBoardMaker::sudokuBoardMaker(sudokuBoard* sudokuBoard) : boardPointer(sudo
 
 sudokuBoardMaker::~sudokuBoardMaker(){}
 
-void sudokuBoardMaker::createSudokuBoard(const SudokuDifficulty & dif) {
-    switch (dif)
-    {
-    case SudokuDifficulty::easy:
-        makeBoard(30);
-        break;
-    case SudokuDifficulty::medium:
-        makeBoard(25);
-        break;
-    case SudokuDifficulty::hard:
-        makeBoard(20);
-        break;
-    }
-}
-
-void sudokuBoardMaker::makeBoard(const int & givenNumbers) {
+void sudokuBoardMaker::createSudokuBoard() {
     fillIndependentSubGrids();
     fillBoard();
 }
@@ -36,7 +21,7 @@ void sudokuBoardMaker::randomFillSubMatrix(const int &row, const int &col) {
     std::queue<int> sequence = helpers::makeRandomNumberQueue(1, 9);
     for(int r = 0; r < 3; r++) {
         for(int c = 0; c < 3; c++) {
-            (*boardPointer)[row * 3 + r][col * 3 + c] = sequence.front();
+            setValue(row * 3 + r, col * 3 + c, sequence.front());
             sequence.pop();
         }
     }
@@ -61,13 +46,13 @@ bool sudokuBoardMaker::fillRemainingBoard(std::queue<int>& allSquares) {
     const int currentSquareCol = allSquares.front() % COLS;
     while(!possibleValues.empty()) {
         if(validInput(currentSquareRow, currentSquareCol, possibleValues.front())) {
-            (*boardPointer)[currentSquareRow][currentSquareCol] = possibleValues.front();
+            setValue(currentSquareRow, currentSquareCol, possibleValues.front());
             bool valueWorks = fillRemainingBoard(allSquares);
             if(valueWorks) {
                 return true;
             }
         }
-        (*boardPointer)[currentSquareRow][currentSquareCol] = 0;
+        setValue(currentSquareRow, currentSquareCol, 0);
         possibleValues.pop();
     }
     allSquares.push(currentSquareRow * COLS + currentSquareCol);
@@ -75,7 +60,8 @@ bool sudokuBoardMaker::fillRemainingBoard(std::queue<int>& allSquares) {
 }
 
 void sudokuBoardMaker::setValue(const int & r, const int & c, const int & num) {
-    boardPointer->at(r)[c] = num;
+    boardPointer->at(r).at(c) = num;
+    boardPointer->at(r).at(c).setDisplay(num);
 }
 
 bool sudokuBoardMaker::validInput(const int & row, const int & col, const int & num) const {

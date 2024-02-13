@@ -2,10 +2,11 @@
 #include <vector>
 #include "sudokuSquare.h"
 
+
 enum class SudokuDifficulty: int {
-    easy,
-    medium,
-    hard
+    easy = 35,
+    medium = 30,
+    hard = 25
 };
 
 typedef std::vector<std::vector<sudokuSquare>> sudokuBoard;
