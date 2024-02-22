@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <string>
+#include <limits>
 
 #include "helpers.h"
 #include "sudoku.h"
@@ -12,7 +13,6 @@ Sudoku::~Sudoku() {}
 
 void Sudoku::run() {
     while(1) {
-        // system("clear");
         switch(state) {
             case State::mainMenu:
                 mainMenu();
@@ -31,9 +31,12 @@ void Sudoku::run() {
                 settings();
                 break;
             case State::exit:
-               printGoodbye();
-               return;
-            break;
+                printGoodbye();
+                return;
+                break;
+            default:
+                invalidInput();
+                break;
         }
     }
 }
@@ -68,7 +71,7 @@ void Sudoku::mainMenu() {
         state = State::exit;
         break;
     default:
-        std::cout << "Invalid input\n";
+        invalidInput();
         break;
     }
 }
@@ -97,7 +100,7 @@ void Sudoku::newBoard() {
         state = State::mainMenu;
         break;
     default:
-        std::cout << "Invalid input\n";
+        invalidInput();
         break;
     }
 }
@@ -115,7 +118,7 @@ void Sudoku::playBoard() {
         resetGrid();
         state = State::mainMenu;
     } else {
-        std::cout << "invalid input\n";
+        invalidInput();
     }
 }
 
@@ -133,7 +136,7 @@ void Sudoku::settings() {
         break;
 
     default:
-        std::cout << "invalid input\n";
+        invalidInput();
     }
 }
 
@@ -153,22 +156,17 @@ void Sudoku::displayStarterNumbers(const SudokuDifficulty& dif) {
 
 void Sudoku::hideNumbers(const int& dif) {
     std::queue<int> allSquares = helpers::makeRandomNumberQueue(0, ROWS * COLS);
-    std::queue<int> toAdd;
     while(allSquares.size() > dif) {
-        std::queue<int> memory;
-        memory.push(allSquares.front());
-        auto& currentSquare = helpers::getSquareFrom1D(board, allSquares.front());
+        int currentIndex = allSquares.front();
+        auto& currentSquare = helpers::getSquareFrom1D(board, currentIndex);
         allSquares.pop();
         currentSquare.setDisplay(0);
-        if(memory.size() % 5 == 0) {
-           int solutions = solver->numUniqueSolutions(board);
-           if(solutions > 1) {
-               for(auto box = helpers::getSquareFrom1D(board, memory.front()); !memory.empty(); memory.pop()) {
-                   box.setDisplay(box.getValue());
-                   toAdd.push(memory.front());
-              }
-           }
-       }
+
+        int solutions = solver->numUniqueSolutions(board);
+        if(solutions > 1) {
+            currentSquare.setDisplay(currentSquare.getValue());
+            allSquares.push(currentIndex);
+        }
     }
 }
 
@@ -193,10 +191,13 @@ void Sudoku::printGrid() const {
 
 void Sudoku::printNumber(const int& row, const int& col) const {
     if(board[row][col].isFixed()) {
-        
         std::cout << CORRECT_COLOR << board[row][col] << RESET_COLOR;
     } else if(board[row][col].getDisplay() != 0) {
-        std::cout << board[row][col].getDisplay();
+        if(solver->validInput(board, row, col, board[row][col].getDisplay())) {
+            std::cout << board[row][col].getDisplay();
+        } else {
+            std::cout << INCORRECT_COLOR << board[row][col].getDisplay() << RESET_COLOR;
+        }
     } else {
         std::cout << ' ';
     }
@@ -265,4 +266,10 @@ void Sudoku::printHorizontal() const {
 
 void Sudoku::printGoodbye() const {
     std::cout << "Thank you for playing!\nSee you next time!\n";
+}
+
+void Sudoku::invalidInput() {
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cout << "Invalid Input\n";
 }

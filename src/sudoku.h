@@ -37,6 +37,7 @@ private:
     void newBoard();
     void playBoard();
     void settings();
+    void invalidInput();
 
     // board functions
     void resetGrid();
