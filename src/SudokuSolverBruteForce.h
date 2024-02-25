@@ -11,7 +11,7 @@ public:
 
     bool isCorrect(const sudokuBoard& board) override;
     bool isInvalidNumLocation(const sudokuBoard& board, const int& r, const int& c, const int& num) override;
-    int numUniqueSolutions(sudokuBoard& board) override;
+    bool uniqueSolution(sudokuBoard& board) override;
 private:
-    int uniqueSolution(sudokuBoard& board, std::queue<std::pair<int, int>> emptySquares);
+    int numSolutions(sudokuBoard& board, std::queue<std::pair<int, int>> emptySquares);
 };

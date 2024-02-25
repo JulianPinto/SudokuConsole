@@ -1,7 +1,7 @@
 #include "SudokuSolverBruteForce.h"
 #include "helpers.h"
 
-SudokuSolverBruteForce::SudokuSolverBruteForce() {}
+SudokuSolverBruteForce::SudokuSolverBruteForce(){}
 
 SudokuSolverBruteForce::~SudokuSolverBruteForce(){}
 
@@ -23,9 +23,9 @@ bool SudokuSolverBruteForce::isInvalidNumLocation(const sudokuBoard & board, con
     return validInput(board, r, c, num);
 }
 
-int SudokuSolverBruteForce::numUniqueSolutions(sudokuBoard& board) {
+bool SudokuSolverBruteForce::uniqueSolution(sudokuBoard& board) {
     if(!isCorrect(board))
-        return 0;
+        return false;
     std::queue<std::pair<int, int>> emptySquares;
     for(int r = 0; r < ROWS; r++) {
         for(int c = 0; c < COLS; c++) {
@@ -33,10 +33,11 @@ int SudokuSolverBruteForce::numUniqueSolutions(sudokuBoard& board) {
                 emptySquares.push(std::pair<int,int>(r,c));
         }
     }
-    return uniqueSolution(board, emptySquares);
+    int solutions = numSolutions(board, emptySquares);
+    return solutions == 1;
 }
 
-int SudokuSolverBruteForce::uniqueSolution(sudokuBoard& board, std::queue<std::pair<int, int>> emptySquares) {
+int SudokuSolverBruteForce::numSolutions(sudokuBoard& board, std::queue<std::pair<int, int>> emptySquares) {
     if(emptySquares.empty()) {
         return 1;
     }
@@ -51,7 +52,7 @@ int SudokuSolverBruteForce::uniqueSolution(sudokuBoard& board, std::queue<std::p
     while(!possibleValues.empty()) {
         if(validInput(board, row, col, possibleValues.front())) {
             current.setValue(possibleValues.front());
-            solutions += uniqueSolution(board, emptySquares);
+            solutions += numSolutions(board, emptySquares);
             current.setValue(0);
         }
         possibleValues.pop();

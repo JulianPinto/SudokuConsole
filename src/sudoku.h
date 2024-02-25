@@ -39,18 +39,18 @@ private:
     void settings();
     void invalidInput();
 
-    // board functions
+    // board setup functions
     void resetGrid();
     void makeSudokuBoard();
     void displayStarterNumbers(const SudokuDifficulty& dif);
     void hideNumbers(const int& dif);
+
+    // gameplay functions
     void processValidBoardInput(const int& r, const int& c, const int& num);
     void setNumber(const int& r, const int& c, const int& num);
     bool validNumber(const int& num) const;
     bool validCoordinates(const int& row, const int& col) const;
     bool inputValid(const int& r, const int& c, const int& num);
-    int getRandomNumber() const;
-
     void checkBoardComplete();
     bool isBoardValid() const;
     bool isBoardSolved() const;

@@ -130,7 +130,10 @@ void Sudoku::settings() {
     case 1: // change error check
         errorCheck = !errorCheck;
         break;
-    case 2: // exit
+    case 2: // change solver
+        // TODO
+        break;
+    case 3: // exit
         state = State::mainMenu;
         break;
     default:
@@ -170,8 +173,8 @@ void Sudoku::hideNumbers(const int& dif) {
         int value = currentSquare.getValue();
         currentSquare.setValue(0);
 
-        int solutions = solver->numUniqueSolutions(board);
-        if(solutions > 1) {
+        bool uniqueSolution = solver->uniqueSolution(board);
+        if(!uniqueSolution) {
             currentSquare.setValue(value);
             visibleSquares.push(currentIndex);
             failedAttempts++;
@@ -253,10 +256,6 @@ bool Sudoku::inputValid(const int& r, const int& c, const int& num) {
     return true;
 }
 
-int Sudoku::getRandomNumber() const {
-    return rand() % 9;
-}
-
 void Sudoku::printMenu() const {
     std::cout << "Control Menu\n1: New Board\n2: Make Board\n3: Settings\n4: Exit\n";
 }
@@ -264,7 +263,8 @@ void Sudoku::printMenu() const {
 void Sudoku::printSettings() const {
     std::cout << "Settings:\n";
     std::cout << "1: toggle Error Check: " << (errorCheck ? "True\n" : "False\n");
-    std::cout << "2: Exit\n";
+    std::cout << "2: change sudoku solving algorithm: TODO\n";
+    std::cout << "3: Exit\n";
 }
 
 void Sudoku::printNewBoardMenu() const {
