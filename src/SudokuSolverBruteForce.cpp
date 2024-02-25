@@ -33,11 +33,11 @@ bool SudokuSolverBruteForce::uniqueSolution(sudokuBoard& board) {
                 emptySquares.push(std::pair<int,int>(r,c));
         }
     }
-    int solutions = numSolutions(board, emptySquares);
+    int solutions = multiSolution(board, emptySquares);
     return solutions == 1;
 }
 
-int SudokuSolverBruteForce::numSolutions(sudokuBoard& board, std::queue<std::pair<int, int>> emptySquares) {
+int SudokuSolverBruteForce::multiSolution(sudokuBoard& board, std::queue<std::pair<int, int>> emptySquares) {
     if(emptySquares.empty()) {
         return 1;
     }
@@ -52,8 +52,10 @@ int SudokuSolverBruteForce::numSolutions(sudokuBoard& board, std::queue<std::pai
     while(!possibleValues.empty()) {
         if(validInput(board, row, col, possibleValues.front())) {
             current.setValue(possibleValues.front());
-            solutions += numSolutions(board, emptySquares);
+            solutions += multiSolution(board, emptySquares);
             current.setValue(0);
+            if(solutions > 1)
+                return solutions;
         }
         possibleValues.pop();
     }

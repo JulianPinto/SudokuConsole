@@ -15,7 +15,6 @@ bool SudokuSolver::validInput(const sudokuBoard& board, const int& r, const int&
     return validInRow(board, r, c, num) && validInCol(board, r, c, num) && validIn3x3(board, r, c, num);
 }
 
-
 bool SudokuSolver::validInRow(const sudokuBoard & board, const int & r, const int & c, const int & num) const {
     for(int i = 0; i < COLS; i++) {
         if(board[r][i].getValue() == num && i != c) {
