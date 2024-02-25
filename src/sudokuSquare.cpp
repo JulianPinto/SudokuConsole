@@ -9,7 +9,6 @@ sudokuSquare::~sudokuSquare() {}
 
 void sudokuSquare::resetSquare() {
     value = 0;
-    display = 0;
     fixed = false;
 }
 
@@ -25,20 +24,12 @@ bool sudokuSquare::isFixed() const {
     return fixed;
 }
 
-int sudokuSquare::getDisplay() const {
-    return display;
-}
-
-void sudokuSquare::setDisplay(const int& val) {
-    display = val;
-}
-
-int& sudokuSquare::getValue() {
+int sudokuSquare::getValue() const {
     return value;
 }
 
-bool sudokuSquare::isCorrect() const {
-    return value == display;
+void sudokuSquare::setValue(const int& val) {
+    value = val;
 }
 
 sudokuSquare& sudokuSquare::operator= (const int& val) {

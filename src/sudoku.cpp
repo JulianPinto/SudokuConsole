@@ -50,7 +50,7 @@ void Sudoku::resetGrid() {
 }
 
 void Sudoku::setNumber(const int & r, const int & c, const int & num) {
-    board[r][c].setDisplay(num);
+    board[r][c].setValue(num);
 }
 
 void Sudoku::mainMenu() {
@@ -130,11 +130,9 @@ void Sudoku::settings() {
     case 1: // change error check
         errorCheck = !errorCheck;
         break;
-    
     case 2: // exit
         state = State::mainMenu;
         break;
-
     default:
         invalidInput();
     }
@@ -148,24 +146,37 @@ void Sudoku::displayStarterNumbers(const SudokuDifficulty& dif) {
     hideNumbers((int)dif);
     for(int i = 0; i < ROWS * COLS; i++) {
         auto& square = helpers::getSquareFrom1D(board, i);
-        if(square.getDisplay() != 0) {
+        if(square.getValue() != 0) {
             square.makeFixed();
         }
     }
 }
 
 void Sudoku::hideNumbers(const int& dif) {
-    std::queue<int> allSquares = helpers::makeRandomNumberQueue(0, ROWS * COLS);
-    while(allSquares.size() > dif) {
-        int currentIndex = allSquares.front();
+    std::queue<int> visibleSquares = helpers::makeRandomNumberQueue(0, ROWS * COLS);
+    std::deque<std::pair<int,int>> hidden;
+    int failedAttempts = 0;
+
+    while(visibleSquares.size() > dif) {
+        if(failedAttempts > visibleSquares.size()) {
+            visibleSquares.push(hidden.front().first);
+            helpers::getSquareFrom1D(board, hidden.front().first).setValue(hidden.front().second);
+            hidden.pop_front();
+            failedAttempts = 0;
+        }
+        int currentIndex = visibleSquares.front();
         auto& currentSquare = helpers::getSquareFrom1D(board, currentIndex);
-        allSquares.pop();
-        currentSquare.setDisplay(0);
+        visibleSquares.pop();
+        int value = currentSquare.getValue();
+        currentSquare.setValue(0);
 
         int solutions = solver->numUniqueSolutions(board);
         if(solutions > 1) {
-            currentSquare.setDisplay(currentSquare.getValue());
-            allSquares.push(currentIndex);
+            currentSquare.setValue(value);
+            visibleSquares.push(currentIndex);
+            failedAttempts++;
+        } else {
+            hidden.push_back(std::pair<int,int>(currentIndex, value));
         }
     }
 }
@@ -192,11 +203,11 @@ void Sudoku::printGrid() const {
 void Sudoku::printNumber(const int& row, const int& col) const {
     if(board[row][col].isFixed()) {
         std::cout << CORRECT_COLOR << board[row][col] << RESET_COLOR;
-    } else if(board[row][col].getDisplay() != 0) {
-        if(solver->validInput(board, row, col, board[row][col].getDisplay())) {
-            std::cout << board[row][col].getDisplay();
+    } else if(board[row][col].getValue() != 0) {
+        if(solver->validInput(board, row, col, board[row][col].getValue())) {
+            std::cout << board[row][col].getValue();
         } else {
-            std::cout << INCORRECT_COLOR << board[row][col].getDisplay() << RESET_COLOR;
+            std::cout << INCORRECT_COLOR << board[row][col].getValue() << RESET_COLOR;
         }
     } else {
         std::cout << ' ';

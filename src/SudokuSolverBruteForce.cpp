@@ -8,7 +8,7 @@ SudokuSolverBruteForce::~SudokuSolverBruteForce(){}
 bool SudokuSolverBruteForce::isCorrect(const sudokuBoard& board) {
     for(int r = 0; r < ROWS; r++) {
         for(int c = 0; c < COLS; c++) {
-            int num = board[r][c].getDisplay();
+            int num = board[r][c].getValue();
             if(num != 0) {
                 if(!isInvalidNumLocation(board, r, c, num)) {
                     return false;
@@ -21,7 +21,6 @@ bool SudokuSolverBruteForce::isCorrect(const sudokuBoard& board) {
 
 bool SudokuSolverBruteForce::isInvalidNumLocation(const sudokuBoard & board, const int & r, const int & c, const int & num) {
     return validInput(board, r, c, num);
-
 }
 
 int SudokuSolverBruteForce::numUniqueSolutions(sudokuBoard& board) {
@@ -30,7 +29,7 @@ int SudokuSolverBruteForce::numUniqueSolutions(sudokuBoard& board) {
     std::queue<std::pair<int, int>> emptySquares;
     for(int r = 0; r < ROWS; r++) {
         for(int c = 0; c < COLS; c++) {
-            if(board[r][c].getDisplay() == 0)
+            if(board[r][c].getValue() == 0)
                 emptySquares.push(std::pair<int,int>(r,c));
         }
     }
@@ -51,9 +50,9 @@ int SudokuSolverBruteForce::uniqueSolution(sudokuBoard& board, std::queue<std::p
 
     while(!possibleValues.empty()) {
         if(validInput(board, row, col, possibleValues.front())) {
-            current.setDisplay(possibleValues.front());
+            current.setValue(possibleValues.front());
             solutions += uniqueSolution(board, emptySquares);
-            current.setDisplay(0);
+            current.setValue(0);
         }
         possibleValues.pop();
     }

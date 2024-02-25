@@ -1,6 +1,5 @@
 #include "SudokuBoardMaker.h"
 #include "helpers.h"
-#include <iostream>
 
 sudokuBoardMaker::sudokuBoardMaker(sudokuBoard* sudokuBoard) : boardPointer(sudokuBoard) {}
 
@@ -30,6 +29,7 @@ void sudokuBoardMaker::randomFillSubMatrix(const int &row, const int &col) {
 void sudokuBoardMaker::fillBoard() {
     std::queue<int> allSquares = helpers::makeRandomNumberQueue(0, ROWS * COLS);
     fillRemainingBoard(allSquares);
+
 }
 
 // TODO: change to use sudokuSolver to remove code duplication
@@ -61,7 +61,6 @@ bool sudokuBoardMaker::fillRemainingBoard(std::queue<int>& allSquares) {
 
 void sudokuBoardMaker::setValue(const int & r, const int & c, const int & num) {
     boardPointer->at(r).at(c) = num;
-    boardPointer->at(r).at(c).setDisplay(num);
 }
 
 bool sudokuBoardMaker::validInput(const int & row, const int & col, const int & num) const {

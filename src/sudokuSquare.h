@@ -9,16 +9,13 @@ public:
     void makeFixed();
     void unFixSquare();
     bool isFixed() const;
-    int getDisplay() const;
-    void setDisplay(const int& val);
-    int& getValue();
-    bool isCorrect() const;
+    int getValue() const;
+    void setValue(const int& val);
 
     sudokuSquare& operator=(const int& val);
     operator int() const;
 
 private:
     int value{0};
-    int display{0};
     bool fixed{false};
 };
