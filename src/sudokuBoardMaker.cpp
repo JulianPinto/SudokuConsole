@@ -29,12 +29,11 @@ void sudokuBoardMaker::randomFillSubMatrix(const int &row, const int &col) {
 void sudokuBoardMaker::fillBoard() {
     std::queue<int> allSquares = helpers::makeRandomNumberQueue(0, ROWS * COLS);
     fillRemainingBoard(allSquares);
-
 }
 
 // TODO: change to use sudokuSolver to remove code duplication
 bool sudokuBoardMaker::fillRemainingBoard(std::queue<int>& allSquares) {
-    while(helpers::getSquareFrom1D(*boardPointer, allSquares.front()).getValue() != 0 && !allSquares.empty()) {
+    while(!allSquares.empty() && helpers::getSquareFrom1D(*boardPointer, allSquares.front()).getValue() != 0) {
         allSquares.pop();
     }
 
