@@ -5,20 +5,6 @@ SudokuSolverBruteForce::SudokuSolverBruteForce(){}
 
 SudokuSolverBruteForce::~SudokuSolverBruteForce(){}
 
-bool SudokuSolverBruteForce::isCorrect(const sudokuBoard& board) {
-    for(int r = 0; r < ROWS; r++) {
-        for(int c = 0; c < COLS; c++) {
-            int num = board[r][c].getValue();
-            if(num != 0) {
-                if(!isInvalidNumLocation(board, r, c, num)) {
-                    return false;
-                }
-            }
-        }
-    }
-    return true;
-}
-
 bool SudokuSolverBruteForce::isInvalidNumLocation(const sudokuBoard & board, const int & r, const int & c, const int & num) {
     return validInput(board, r, c, num);
 }
@@ -27,12 +13,8 @@ bool SudokuSolverBruteForce::uniqueSolution(sudokuBoard& board) {
     if(!isCorrect(board))
         return false;
     std::queue<std::pair<int, int>> emptySquares;
-    for(int r = 0; r < ROWS; r++) {
-        for(int c = 0; c < COLS; c++) {
-            if(board[r][c].getValue() == 0)
-                emptySquares.push(std::pair<int,int>(r,c));
-        }
-    }
+    getEmptySquares(board, emptySquares);
+    
     int solutions = multiSolution(board, emptySquares);
     return solutions == 1;
 }
@@ -60,4 +42,13 @@ int SudokuSolverBruteForce::multiSolution(sudokuBoard& board, std::queue<std::pa
         possibleValues.pop();
     }
     return solutions;
+}
+
+void getEmptySquares(const sudokuBoard& board, std::queue<std::pair<int, int>> emptySquares) {
+    for(int r = 0; r < ROWS; r++) {
+        for(int c = 0; c < COLS; c++) {
+            if(board[r][c].getValue() == 0)
+                emptySquares.push(std::pair<int,int>(r,c));
+        }
+    }
 }

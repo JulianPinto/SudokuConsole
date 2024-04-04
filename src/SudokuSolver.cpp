@@ -1,5 +1,19 @@
 #include "SudokuSolver.h"
 
+bool SudokuSolver::isCorrect(const sudokuBoard& board) {
+    for(int r = 0; r < ROWS; r++) {
+        for(int c = 0; c < COLS; c++) {
+            int num = board[r][c].getValue();
+            if(num != 0) {
+                if(!isInvalidNumLocation(board, r, c, num)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
 bool SudokuSolver::isBoardComplete(const sudokuBoard& board) {
     for(int r = 0; r < ROWS; r++) {
         for(int c = 0; c < COLS; c++) {
