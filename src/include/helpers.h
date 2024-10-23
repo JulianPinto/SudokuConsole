@@ -1,7 +1,7 @@
 #pragma once
 
 #include <queue>
-#include "sudokuSquare.h"
+#include "sudokuSquare.hpp"
 #include "Constants.h"
 
 namespace helpers {

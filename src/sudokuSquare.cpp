@@ -1,9 +1,9 @@
 
-#include "sudokuSquare.h"
+#include "sudokuSquare.hpp"
 
 sudokuSquare::sudokuSquare() {}
 
-sudokuSquare::sudokuSquare(const int& val) : value{val} {}
+sudokuSquare::sudokuSquare(const size_t& val) : value{val} {}
 
 sudokuSquare::~sudokuSquare() {}
 
@@ -24,19 +24,19 @@ bool sudokuSquare::isFixed() const {
     return fixed;
 }
 
-int sudokuSquare::getValue() const {
+size_t sudokuSquare::getValue() const {
     return value;
 }
 
-void sudokuSquare::setValue(const int& val) {
+void sudokuSquare::setValue(const size_t& val) {
     value = val;
 }
 
-sudokuSquare& sudokuSquare::operator= (const int& val) {
+sudokuSquare& sudokuSquare::operator= (const size_t& val) {
     value = val;
     return *this;
 }
 
-sudokuSquare::operator int() const {
+sudokuSquare::operator size_t() const {
     return value;
 }

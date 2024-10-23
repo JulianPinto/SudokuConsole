@@ -3,19 +3,19 @@ class sudokuSquare
 {
 public:
     sudokuSquare();
-    sudokuSquare(const int& val);
+    sudokuSquare(const size_t& val);
     ~sudokuSquare();
     void resetSquare();
     void makeFixed();
     void unFixSquare();
     bool isFixed() const;
-    int getValue() const;
-    void setValue(const int& val);
+    size_t getValue() const;
+    void setValue(const size_t& val);
 
-    sudokuSquare& operator=(const int& val);
-    operator int() const;
+    sudokuSquare& operator=(const size_t& val);
+    operator size_t() const;
 
 private:
-    int value{0};
+    size_t value{0};
     bool fixed{false};
 };

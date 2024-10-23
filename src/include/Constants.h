@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "sudokuSquare.h"
+#include "sudokuSquare.hpp"
 
 
 enum class SudokuDifficulty: int {
