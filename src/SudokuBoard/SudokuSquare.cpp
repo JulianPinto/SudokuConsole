@@ -7,36 +7,30 @@ SudokuSquare::SudokuSquare(const size_t& val) : value{val} {}
 
 SudokuSquare::~SudokuSquare() {}
 
-void SudokuSquare::resetSquare() {
+void SudokuSquare::ResetSquare() {
     value = 0;
-    fixed = false;
+    locked = false;
 }
 
-void SudokuSquare::makeFixed() {
-    fixed = true;
+void SudokuSquare::LockSquare() {
+    locked = true;
 }
 
-void SudokuSquare::unFixSquare() {
-    fixed = false;
+void SudokuSquare::UnlockSquare() {
+    locked = false;
 }
 
-bool SudokuSquare::isFixed() const {
-    return fixed;
+bool SudokuSquare::IsLocked() const {
+    return locked;
 }
 
-size_t SudokuSquare::getValue() const {
+size_t SudokuSquare::GetValue() const {
     return value;
 }
 
-void SudokuSquare::setValue(const size_t& val) {
+bool SudokuSquare::SetValue(const size_t& val) {
+    if(locked)
+        return false;
     value = val;
-}
-
-SudokuSquare& SudokuSquare::operator= (const size_t& val) {
-    value = val;
-    return *this;
-}
-
-SudokuSquare::operator size_t() const {
-    return value;
+    return true;
 }

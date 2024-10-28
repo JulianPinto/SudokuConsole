@@ -5,17 +5,14 @@ public:
     SudokuSquare();
     SudokuSquare(const size_t& val);
     ~SudokuSquare();
-    void resetSquare();
-    void makeFixed();
-    void unFixSquare();
-    bool isFixed() const;
-    size_t getValue() const;
-    void setValue(const size_t& val);
-
-    SudokuSquare& operator=(const size_t& val);
-    operator size_t() const;
+    void ResetSquare();
+    void LockSquare();
+    void UnlockSquare();
+    bool IsLocked() const;
+    size_t GetValue() const;
+    bool SetValue(const size_t& val);
 
 private:
     size_t value{0};
-    bool fixed{false};
+    bool locked{false};
 };
