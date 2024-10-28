@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "sudokuSquare.hpp"
+#include "SudokuSquare.hpp"
 
 
 enum class SudokuDifficulty: int {
@@ -9,6 +9,6 @@ enum class SudokuDifficulty: int {
     hard = 25
 };
 
-typedef std::vector<std::vector<sudokuSquare>> sudokuBoard;
+typedef std::vector<std::vector<SudokuSquare>> sudokuBoard;
 const int ROWS{9};
 const int COLS{9};

@@ -7,7 +7,7 @@
 #include "helpers.h"
 #include "sudoku.h"
 
-Sudoku::Sudoku(SudokuSolver* solver) : board(ROWS, std::vector<sudokuSquare>(COLS, 0)), solver(solver), boardMaker(&board) {}
+Sudoku::Sudoku(SudokuSolver* solver) : board(ROWS, std::vector<SudokuSquare>(COLS, 0)), solver(solver), boardMaker(&board) {}
 
 Sudoku::~Sudoku() {}
 

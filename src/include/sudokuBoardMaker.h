@@ -1,6 +1,6 @@
 #pragma once
 #include "Constants.h"
-#include "sudokuSquare.hpp"
+#include "SudokuSquare.hpp"
 #include <vector>
 #include <queue>
 

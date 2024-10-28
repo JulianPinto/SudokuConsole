@@ -1,10 +1,10 @@
 #pragma once
-class sudokuSquare
+class SudokuSquare
 {
 public:
-    sudokuSquare();
-    sudokuSquare(const size_t& val);
-    ~sudokuSquare();
+    SudokuSquare();
+    SudokuSquare(const size_t& val);
+    ~SudokuSquare();
     void resetSquare();
     void makeFixed();
     void unFixSquare();
@@ -12,7 +12,7 @@ public:
     size_t getValue() const;
     void setValue(const size_t& val);
 
-    sudokuSquare& operator=(const size_t& val);
+    SudokuSquare& operator=(const size_t& val);
     operator size_t() const;
 
 private:

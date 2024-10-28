@@ -29,7 +29,7 @@ int SudokuSolverBruteForce::multiSolution(sudokuBoard& board, std::queue<std::pa
     int row = emptySquares.front().first;
     int col = emptySquares.front().second;
     emptySquares.pop();
-    sudokuSquare& current = board[row][col];
+    SudokuSquare& current = board[row][col];
 
     while(!possibleValues.empty()) {
         if(validInput(board, row, col, possibleValues.front())) {

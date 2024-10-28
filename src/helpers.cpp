@@ -8,7 +8,7 @@
 
 
 namespace helpers {
-    sudokuSquare& getSquareFrom1D(sudokuBoard& board, const int& coord) {
+    SudokuSquare& getSquareFrom1D(sudokuBoard& board, const int& coord) {
         int row = coord / COLS;
         int col = coord % COLS;
         return board[row][col];
