@@ -1,5 +1,5 @@
-#include "SudokuSolverBruteForce.h"
-#include "helpers.h"
+#include "SudokuSolverBruteForce.hpp"
+#include "helpers.hpp"
 
 SudokuSolverBruteForce::SudokuSolverBruteForce(){}
 

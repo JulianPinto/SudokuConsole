@@ -4,8 +4,8 @@
 #include <string>
 #include <limits>
 
-#include "helpers.h"
-#include "sudoku.h"
+#include "helpers.hpp"
+#include "Sudoku.hpp"
 
 Sudoku::Sudoku(SudokuSolver* solver) : board(ROWS, std::vector<SudokuSquare>(COLS, 0)), solver(solver), boardMaker(&board) {}
 

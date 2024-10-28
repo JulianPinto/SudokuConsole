@@ -1,6 +1,6 @@
 #pragma once
-#include "SudokuSolver.h"
-#include "Constants.h"
+#include "SudokuSolver.hpp"
+#include "Constants.hpp"
 #include <utility>
 #include <queue>
 

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stdio.h>
-#include "sudoku.h"
-#include "SudokuSolverBruteForce.h"
+#include "Sudoku.hpp"
+#include "SudokuSolverBruteForce.hpp"
 
 int main(int argc, char *argv[]) {
     std::cout << "Welcome to Console Sudoku\n";

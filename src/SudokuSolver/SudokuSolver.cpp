@@ -1,4 +1,4 @@
-#include "SudokuSolver.h"
+#include "SudokuSolver.hpp"
 
 bool SudokuSolver::isCorrect(const sudokuBoard& board) {
     for(int r = 0; r < ROWS; r++) {

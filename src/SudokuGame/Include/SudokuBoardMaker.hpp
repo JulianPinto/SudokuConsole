@@ -1,17 +1,17 @@
 #pragma once
-#include "Constants.h"
+#include "Constants.hpp"
 #include "SudokuSquare.hpp"
 #include <vector>
 #include <queue>
 
-class sudokuBoardMaker
+class SudokuBoardMaker
 {
 private:
     sudokuBoard* boardPointer;
 
 public:
-    sudokuBoardMaker(sudokuBoard* sudokuBoard);
-    ~sudokuBoardMaker();
+    SudokuBoardMaker(sudokuBoard* sudokuBoard);
+    ~SudokuBoardMaker();
 
     void createSudokuBoard();
 

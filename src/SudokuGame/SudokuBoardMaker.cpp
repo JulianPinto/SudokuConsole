@@ -1,22 +1,22 @@
-#include "SudokuBoardMaker.h"
-#include "helpers.h"
+#include "SudokuBoardMaker.hpp"
+#include "helpers.hpp"
 
-sudokuBoardMaker::sudokuBoardMaker(sudokuBoard* sudokuBoard) : boardPointer(sudokuBoard) {}
+SudokuBoardMaker::SudokuBoardMaker(sudokuBoard* sudokuBoard) : boardPointer(sudokuBoard) {}
 
-sudokuBoardMaker::~sudokuBoardMaker(){}
+SudokuBoardMaker::~SudokuBoardMaker(){}
 
-void sudokuBoardMaker::createSudokuBoard() {
+void SudokuBoardMaker::createSudokuBoard() {
     fillIndependentSubGrids();
     fillBoard();
 }
 
-void sudokuBoardMaker::fillIndependentSubGrids() {
+void SudokuBoardMaker::fillIndependentSubGrids() {
     randomFillSubMatrix(0, 0);
     randomFillSubMatrix(1, 1);
     randomFillSubMatrix(2, 2);
 }
 
-void sudokuBoardMaker::randomFillSubMatrix(const int &row, const int &col) {
+void SudokuBoardMaker::randomFillSubMatrix(const int &row, const int &col) {
     std::queue<int> sequence = helpers::makeRandomNumberQueue(1, 9);
     for(int r = 0; r < 3; r++) {
         for(int c = 0; c < 3; c++) {
@@ -26,13 +26,13 @@ void sudokuBoardMaker::randomFillSubMatrix(const int &row, const int &col) {
     }
 }
 
-void sudokuBoardMaker::fillBoard() {
+void SudokuBoardMaker::fillBoard() {
     std::queue<int> allSquares = helpers::makeRandomNumberQueue(0, ROWS * COLS);
     fillRemainingBoard(allSquares);
 }
 
 // TODO: change to use sudokuSolver to remove code duplication
-bool sudokuBoardMaker::fillRemainingBoard(std::queue<int>& allSquares) {
+bool SudokuBoardMaker::fillRemainingBoard(std::queue<int>& allSquares) {
     while(!allSquares.empty() && helpers::getSquareFrom1D(*boardPointer, allSquares.front()).getValue() != 0) {
         allSquares.pop();
     }
@@ -58,15 +58,15 @@ bool sudokuBoardMaker::fillRemainingBoard(std::queue<int>& allSquares) {
     return false;
 }
 
-void sudokuBoardMaker::setValue(const int & r, const int & c, const int & num) {
+void SudokuBoardMaker::setValue(const int & r, const int & c, const int & num) {
     boardPointer->at(r).at(c) = num;
 }
 
-bool sudokuBoardMaker::validInput(const int & row, const int & col, const int & num) const {
+bool SudokuBoardMaker::validInput(const int & row, const int & col, const int & num) const {
     return validInRow(row, col, num) && validInCol(row, col, num) && validIn3x3(row, col, num);
 }
 
-bool sudokuBoardMaker::validInRow(const int & r, const int & c, const int & num) const {
+bool SudokuBoardMaker::validInRow(const int & r, const int & c, const int & num) const {
     for(int i = 0; i < ROWS; i++) {
         if(i != r && (*boardPointer)[i][c].getValue() == num)
             return false;
@@ -74,7 +74,7 @@ bool sudokuBoardMaker::validInRow(const int & r, const int & c, const int & num)
     return true;
 }
 
-bool sudokuBoardMaker::validInCol(const int & r, const int & c, const int & num) const {
+bool SudokuBoardMaker::validInCol(const int & r, const int & c, const int & num) const {
     for(int i = 0; i < COLS; i++) {
         if(i != c && (*boardPointer)[r][i].getValue() == num)
             return false;
@@ -82,7 +82,7 @@ bool sudokuBoardMaker::validInCol(const int & r, const int & c, const int & num)
     return true;
 }
 
-bool sudokuBoardMaker::validIn3x3(const int & r, const int & c, const int & num) const {
+bool SudokuBoardMaker::validIn3x3(const int & r, const int & c, const int & num) const {
     int row = r / 3;
     int col = c / 3;
 

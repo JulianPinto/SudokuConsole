@@ -1,5 +1,5 @@
-#include "SudokuSolverHuman.h"
-#include "helpers.h"
+#include "SudokuSolverHuman.hpp"
+#include "helpers.hpp"
 
 SudokuSolverHuman::SudokuSolverHuman() {}
 SudokuSolverHuman::~SudokuSolverHuman() {}

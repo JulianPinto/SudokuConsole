@@ -2,7 +2,7 @@
 
 #include <queue>
 #include "SudokuSquare.hpp"
-#include "Constants.h"
+#include "Constants.hpp"
 
 namespace helpers {
     SudokuSquare& getSquareFrom1D(sudokuBoard& board, const int& coord);

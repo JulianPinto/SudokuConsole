@@ -1,8 +1,8 @@
 #pragma once
 #include <vector>
-#include "SudokuSolver.h"
-#include "sudokuBoardMaker.h"
-#include "Constants.h"
+#include "SudokuSolver.hpp"
+#include "SudokuBoardMaker.hpp"
+#include "Constants.hpp"
 
 class Sudoku
 {
@@ -23,7 +23,7 @@ private:
     State state{State::mainMenu};
     sudokuBoard board;
     SudokuSolver* solver;
-    sudokuBoardMaker boardMaker;
+    SudokuBoardMaker boardMaker;
     bool errorCheck{false};
 
 public:
